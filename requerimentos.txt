@@ -1,0 +1,27 @@
+Requisitos:
+
+- A API deve ser RESTful
+
+- Para cada planeta, os seguintes dados devem ser obtidos do banco de dados da aplicação,
+sendo inserido manualmente:
+Nome
+Clima
+Terreno
+
+
+- Para cada planeta também devemos retornar a quantidade de aparições em filmes,
+que devem ser obtidas pela API pública do Star Wars: https://swapi.co/
+
+
+Funcionalidades desejadas:
+- Adicionar um planeta (com nome, clima e terreno) - [POST] /planeta
+- Listar planetas [GET] /planeta
+- Buscar por nome [GET] /planeta/<nome>
+- Buscar por ID [GET] /planeta/<nome>
+- Remover planeta [DELETE] /planeta/<id>
+
+
+Linguagens que usamos: Java, Golang
+Bancos que usamos: MongoDB, Cassandra, Redis, Elasticsearch
+
+
