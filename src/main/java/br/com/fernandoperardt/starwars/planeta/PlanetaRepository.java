@@ -1,11 +1,15 @@
 package br.com.fernandoperardt.starwars.planeta;
 
-import java.util.List;
-
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface PlanetaRepository extends MongoRepository<PlanetaModel, String> {
+import java.util.List;
 
-    PlanetaModel findByNome(String nome);
+public interface PlanetaRepository extends MongoRepository<PlanetaEntity, String> {
+
+    PlanetaEntity findByNome(String nome);
+
+    List<PlanetaEntity> findListByNome(String nome);
+
+    List<PlanetaEntity> findListById(String id);
 
 }

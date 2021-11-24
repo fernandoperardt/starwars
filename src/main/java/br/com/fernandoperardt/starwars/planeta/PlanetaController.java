@@ -7,35 +7,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/planeta")
 public class PlanetaController {
-
     @Autowired
-    private PlanetaRepository repository;
+    private PlanetaService service;
 
     @GetMapping
-    public Object pesquisarPlaneta(@RequestParam(value = "nome", required = false) String nome, @RequestParam(value = "id", required = false) String id) {
+    public List<PlanetaEntity> pesquisarPlaneta(@RequestParam(value = "nome", required = false) String nome, @RequestParam(value = "id", required = false) String id) {
         if (nome != null && !nome.isBlank())
-            return repository.findByNome(nome);
+            return service.pesquisarPlanetasPorNome(nome);
         else if (id != null)
-            return repository.findById(id);
+            return service.pesquisarPlanetasPorId(id);
         else
-            return repository.findAll();
+            return service.pesquisarTodosPlanetas();
     }
 
     @PostMapping
-    public ResponseEntity<Object> criarPlaneta(@Valid @RequestBody PlanetaModel planeta) {
-        if(repository.findByNome(planeta.getNome()) != null) {
+    public ResponseEntity<PlanetaEntity> criarPlaneta(@Valid @RequestBody PlanetaDTO planetaDTO) {
+        List<PlanetaEntity> planetasPesquisados = service.pesquisarPlanetasPorNome(planetaDTO.getNome());
+        if(planetasPesquisados != null && !planetasPesquisados.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        planeta.setQtdFilmesApareceu(new PesquisadorSwapi().pesquisarQuantasVezesOPlanetaApareceuPorNome(planeta.getNome()));
-        return ResponseEntity.ok(repository.save(planeta));
+        PlanetaEntity planetaEntity = service.criarPlaneta(planetaDTO);
+        return ResponseEntity.ok(planetaEntity);
     }
 
     @DeleteMapping
     public void deletarPlanetaPeloId(@RequestParam(value = "id", required = false) String id ){
-        repository.deleteById(id);
+        service.apagarPlanetaPorId(id);
     }
 }

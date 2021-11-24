@@ -1,6 +1,8 @@
 package br.com.fernandoperardt.starwars.swapi;
 
-import br.com.fernandoperardt.starwars.swapi.planets.PesquisaPlanetaDTO;
+import br.com.fernandoperardt.starwars.swapi.planeta.PlanetaSwapiDTO;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 public class PesquisadorSwapi {
@@ -10,9 +12,14 @@ public class PesquisadorSwapi {
 
     public int pesquisarQuantasVezesOPlanetaApareceuPorNome(String nome) {
         RestTemplate restTemplate = new RestTemplate();
-        PesquisaPlanetaDTO pedido = restTemplate.getForObject(URL_BASE.concat(URL_PLANETA).concat(URL_SEARCH).concat(nome), PesquisaPlanetaDTO.class);
-        if(pedido != null &&  pedido.getCount() > 0)
-            return pedido.getResults()[0].getFilms().length;
+        // workaround to ResultadoDTO<PlanetaDTO> planetaPesquisado = restTemplate.getForObject(URL_BASE.concat(URL_PLANETA).concat(URL_SEARCH).concat(nome), ResultadoDTO.class);
+        // java.lang.ClassCastException: java.util.LinkedHashMap cannot be cast[...]
+        ResultadoSwapiDTO<PlanetaSwapiDTO> planetaPesquisado = restTemplate.exchange(URL_BASE.concat(URL_PLANETA).concat(URL_SEARCH).concat(nome),
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<ResultadoSwapiDTO<PlanetaSwapiDTO>>() {}).getBody();
+        if(planetaPesquisado != null &&  planetaPesquisado.getCount() > 0)
+            return planetaPesquisado.getResults().get(0).getFilms().size();
         else
             return 0;
     }

@@ -3,7 +3,7 @@ import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
 
-public class PlanetaModel {
+public class PlanetaEntity {
     @Id
     private String id;
     @NotNull
@@ -14,15 +14,8 @@ public class PlanetaModel {
     private String terreno;
     private int qtdFilmesApareceu;
 
-    public PlanetaModel() {}
+    public PlanetaEntity() {}
 
-    public PlanetaModel(String id, String nome, String clima, String terreno) {
-        this.id = id;
-
-        this.nome = nome;
-        this.clima = clima;
-        this.terreno = terreno;
-    }
     public String getId() {
         return id;
     }
