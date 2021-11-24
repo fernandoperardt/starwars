@@ -14,6 +14,12 @@ public class PlanetaDTO {
     public PlanetaDTO() {
     }
 
+    public PlanetaDTO(String nome, String clima, String terreno) {
+        this.nome = nome;
+        this.clima = clima;
+        this.terreno = terreno;
+    }
+
     public String getNome() {
         return nome;
     }

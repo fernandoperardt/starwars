@@ -2,6 +2,7 @@ package br.com.fernandoperardt.starwars.planeta;
 import org.springframework.data.annotation.Id;
 
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 public class PlanetaEntity {
     @Id
@@ -15,6 +16,12 @@ public class PlanetaEntity {
     private int qtdFilmesApareceu;
 
     public PlanetaEntity() {}
+
+    public PlanetaEntity(String nome, String clima, String terreno) {
+        this.nome = nome;
+        this.clima = clima;
+        this.terreno = terreno;
+    }
 
     public String getId() {
         return id;
@@ -65,5 +72,18 @@ public class PlanetaEntity {
                 ", terreno='" + terreno + '\'' +
                 ", qtdFilmesApareceu=" + qtdFilmesApareceu +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlanetaEntity that = (PlanetaEntity) o;
+        return qtdFilmesApareceu == that.qtdFilmesApareceu && Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(clima, that.clima) && Objects.equals(terreno, that.terreno);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, clima, terreno, qtdFilmesApareceu);
     }
 }
